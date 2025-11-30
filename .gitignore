@@ -1,0 +1,45 @@
+# ───────────────────────────────
+#  Arquivos e pastas - Python
+# ───────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.db
+
+# Virtual env
+env/
+venv/
+.venv/
+
+# Cache geral
+.cache/
+.ipynb_checkpoints/
+
+# Arquivos de log
+*.log
+
+# ───────────────────────────────
+#  Streamlit
+# ───────────────────────────────
+.streamlit/secrets.toml
+.streamlit/config.toml
+
+# gráficos temporários
+temp/
+*.png
+*.jpg
+
+# ───────────────────────────────
+#  Arquivos de Sistema
+# ───────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ───────────────────────────────
+#  Dependências ou Pastas grandes
+# ───────────────────────────────
+data/raw/
+data/temp/
+data/cache/

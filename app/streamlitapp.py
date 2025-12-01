@@ -7,13 +7,12 @@ from src.nutriscore import compute_raw_score, normalize_score
 from src.clustering import run_kmeans, compute_pca
 from src.visualize import pca_scatter, cluster_bar, hist_nutriscore, radar_for_food
 
-st.set_page_config(layout='wide', page_title='NutriCluster v2', page_icon='🥗')
+st.set_page_config(layout='wide', page_title='NutriCluster', page_icon='🥗')
 
-st.title('🥗 NutriCluster — NutriScore + Clusterização (v2)')
+st.title('🥗 NutriCluster — NutriScore + Clusterização')
 st.write("Checkpoint A: app iniciou")
 st.markdown('Projeto: Clusterização + NutriScore. Use os filtros no painel esquerdo para explorar os dados.')
 
-# Sidebar - upload and params
 st.sidebar.header('Dados & Parâmetros')
 uploaded = st.sidebar.file_uploader('Upload CSV (ou deixe vazio para usar data/food_nutrition_dataset.csv)', type=['csv'])
 
@@ -27,23 +26,23 @@ except Exception as e:
     st.error(f'Erro ao carregar dataset: {e}')
     st.stop()
 
-# normalize columns (sempre)
+
 df_raw.columns = df_raw.columns.str.strip().str.lower()
 st.write("Checkpoint B: dataset carregado", df_raw.shape)
 
-# required columns
+
 required_cols = ['food_name', 'category', 'calories', 'protein', 'carbs', 'fat', 'iron', 'vitamin_c']
 missing = [c for c in required_cols if c not in df_raw.columns]
 if missing:
     st.error(f"Dataset não contém as colunas necessárias: {missing}. Verifique o CSV.")
     st.stop()
 
-# ensure numeric for nutrient columns (safe coercion)
+
 nutrient_cols = ['calories', 'protein', 'carbs', 'fat', 'iron', 'vitamin_c']
 for c in nutrient_cols:
     df_raw[c] = pd.to_numeric(df_raw[c], errors='coerce')
 
-# compute safe maxima for sliders (use 0.0 if all NaN)
+
 safe_max = {}
 for c in nutrient_cols:
     mx = df_raw[c].max(skipna=True)
@@ -91,7 +90,6 @@ with st.spinner('Pré-processando...'):
 # ensure df_scored has original nutrient columns (convert if needed)
 for c in nutrient_cols:
     if c not in df_scored.columns:
-        # try to recover from df_raw
         if c in df_raw.columns:
             df_scored[c] = df_raw[c]
         else:
@@ -130,7 +128,6 @@ with st.spinner('Executando k-means e PCA...'):
 
 st.write("Checkpoint G: kmeans + pca finalizados", df_clustered.shape)
 
-# Layout top
 st.subheader('Tabela com NutriScore (filtrada)')
 st.markdown('**Explicação**: NutriScore (0-100) — fórmula linear: +protein, +iron, +vitamin_c; -calories, -fat, -carbs. Ajuste os pesos em src/nutri_score.py.')
 st.dataframe(df_clustered[['food_name','category','calories','protein','carbs','fat','iron','vitamin_c','nutri_score','cluster']].sort_values('nutri_score', ascending=False).head(top_n))
@@ -163,7 +160,7 @@ with col2:
     st.markdown('**Médias (features normalizadas)**')
     st.dataframe(df_clustered.groupby('cluster')[['calories','protein','carbs','fat','iron','vitamin_c','nutri_score']].mean().round(3))
 
-# Recommendations by similarity (optional)
+# Recommendations by similarity
 if show_recs:
     st.subheader('Recomendações por similaridade')
     selected = st.selectbox('Escolha um alimento para ver substitutos', options=df_clustered['food_name'].tolist())

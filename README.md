@@ -13,33 +13,14 @@ A aplicação inclui uma interface interativa construída em Streamlit para expl
 ✔️ Recomendações de alimentos substitutos/parecidos;
 ✔️ Filtros avançados por nutrientes.
 
-📁 Estrutura do Projeto
-nutri_foodclustering/
-│
-├── app/
-│   └── streamlitapp.py               # Aplicação Streamlit principal
-│
-├── data/
-│   └── food_nutrition_dataset.csv    # Dataset padrão
-│
-├── src/
-│   ├── preprocess.py                 # Carregamento e normalização dos dados
-│   ├── nutriscore.py                 # Cálculo do NutriScore
-│   ├── clustering.py                 # K-Means e PCA
-│   └── visualize.py                  # Gráficos e visualizações
-│
-├── requirements.txt
-└── README.md
-
 📦 Instalação
-1️⃣ Clone o repositório
+1️⃣ Clone o repositório:
 git clone https://github.com/SEU_USUARIO/nutri_foodclustering.git
-cd nutri_foodclustering
 
-2️⃣ Instale as dependências
+2️⃣ Instale as dependências:
 pip install -r requirements.txt
 
-▶️ Executando o Projeto
+▶️ Executando o Projeto - 
 Execute o Streamlit: streamlit run app/streamlitapp.py
 
 📊 Dataset
